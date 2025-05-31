@@ -22,10 +22,9 @@ export function Navbar() {
 
   const closeMobileMenu = () => {
     setIsAnimating(false);
-    // Wait for animation to complete before hiding the menu
     setTimeout(() => {
       setIsMobileMenuOpen(false);
-    }, 300); // Match this with the CSS transition duration
+    }, 300);
   };
 
   useEffect(() => {
@@ -44,7 +43,7 @@ export function Navbar() {
     <nav className="sticky top-0 bg-white dark:bg-gray-800 shadow-md z-50 border-b border-gray-100 dark:border-gray-700">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          {/* Left side - Improved alignment */}
+          {/* Left side */}
           <div className="flex items-center space-x-2 md:space-x-4">
             <button
               className="md:hidden text-secondary dark:text-gray-200 hover:text-primary dark:hover:text-primary transition-colors p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -66,7 +65,7 @@ export function Navbar() {
             </a>
           </div>
 
-          {/* Right side - Improved spacing */}
+          {/* Right side */}
           <div className="flex items-center space-x-3 md:space-x-6">
             {/* Dark mode toggle */}
             <button

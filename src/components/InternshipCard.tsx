@@ -1,4 +1,3 @@
-// Update the imports at the top
 import { FaHome, FaClock, FaBookmark, FaRegBookmark, FaMapMarkerAlt, FaRupeeSign, FaCalendarAlt } from 'react-icons/fa'
 import { type Internship } from '../types'
 import { formatCurrency } from '../lib/utils'

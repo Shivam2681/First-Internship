@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { FiltersSidebar } from './components/FiltersSidebar'
+import { Footer } from './components/Footer'
 import { InternshipsList } from './components/InternshipsList'
 import { Navbar } from './components/Navbar'
 
@@ -30,6 +31,7 @@ function App() {
           </main>
         </div>
       </div>
+      <Footer />
     </div>
   )
 }
