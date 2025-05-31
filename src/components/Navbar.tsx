@@ -219,7 +219,7 @@ export function Navbar() {
                   <div className="flex">
                     {/* Left Column - Certification Courses */}
                     <div className="w-1/2 p-6 border-r">
-                      <h3 className="text-gray-800 font-medium mb-4">
+                      <h3 className="flex border-b-2 border-blue-400 items-center text-secondary hover:text-primary py-2 font-medium mb-4">
                         Certification Courses
                       </h3>
                       <div className="space-y-3">
@@ -282,7 +282,7 @@ export function Navbar() {
 
                     {/* Right Column - Placement Guarantee Courses */}
                     <div className="w-1/2 p-6">
-                      <h3 className="text-gray-800 font-medium mb-4">
+                      <h3 className="flex border-b-2 border-blue-400 items-center text-secondary hover:text-primary py-2 font-medium mb-4">
                         Placement Guarantee Courses
                       </h3>
                       <div className="space-y-3">

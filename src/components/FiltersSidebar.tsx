@@ -45,6 +45,8 @@ export function FiltersSidebar({ filters, onFiltersChange }: FiltersSidebarProps
   const [keyword, setKeyword] = useState('')
   const [profileSearch, setProfileSearch] = useState('')
   const [locationSearch, setLocationSearch] = useState('')
+  const [profilePopoverOpen, setProfilePopoverOpen] = useState(false)
+  const [locationPopoverOpen, setLocationPopoverOpen] = useState(false)
 
   const handlePreferencesChange = (checked: boolean) => {
     if (!checked) {
@@ -122,7 +124,7 @@ export function FiltersSidebar({ filters, onFiltersChange }: FiltersSidebarProps
 
           <div className="space-y-2">
             <label className="block text-gray-700">Profile</label>
-            <Popover.Root>
+            <Popover.Root open={profilePopoverOpen} onOpenChange={setProfilePopoverOpen}>
               <Popover.Trigger asChild>
                 <button className="w-full px-3 py-2 border border-gray-300 rounded-lg text-left text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-gray-50" disabled={!filters.usePreferences}>
                   {filters.profile || 'e.g. Marketing'}
@@ -146,6 +148,7 @@ export function FiltersSidebar({ filters, onFiltersChange }: FiltersSidebarProps
                         onClick={() => {
                           handleInputChange('profile', profile)
                           setProfileSearch('')
+                          setProfilePopoverOpen(false)
                         }}
                         className="w-full px-3 py-2 text-left hover:bg-gray-100 rounded-lg"
                       >
@@ -160,7 +163,7 @@ export function FiltersSidebar({ filters, onFiltersChange }: FiltersSidebarProps
 
           <div className="space-y-2">
             <label className="block text-gray-700">Location</label>
-            <Popover.Root>
+            <Popover.Root open={locationPopoverOpen} onOpenChange={setLocationPopoverOpen}>
               <Popover.Trigger asChild>
                 <button className="w-full px-3 py-2 border border-gray-300 rounded-lg text-left text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-gray-50" disabled={!filters.usePreferences}>
                   {filters.location || 'e.g. Delhi'}
@@ -184,6 +187,7 @@ export function FiltersSidebar({ filters, onFiltersChange }: FiltersSidebarProps
                         onClick={() => {
                           handleInputChange('location', location)
                           setLocationSearch('')
+                          setLocationPopoverOpen(false)
                         }}
                         className="w-full px-3 py-2 text-left hover:bg-gray-100 rounded-lg"
                       >

@@ -20,7 +20,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       <Navbar />
-      <div className="container py-8 max-w-5xl mx-auto px-4">
+      <div className="container py-8 max-w-5xl mx-auto px-4 mt-5">
         <div className="flex flex-col md:flex-row gap-6">
           <aside className="md:w-72 md:sticky md:top-44 md:h-fit">
             <FiltersSidebar filters={filters} onFiltersChange={setFilters} />
