@@ -4,6 +4,7 @@ import { InternshipCard } from './InternshipCard'
 import { fetchInternships } from '../lib/api'
 import { useBookmarks } from '../lib/hooks'
 import { InternshipSkeleton } from './InternshipSkeleton'
+import { InternshipModal } from './InternshipModal'
 
 // Define sorting options
 type SortOption = 'newest' | 'duration' | 'stipend'
@@ -26,6 +27,7 @@ export function InternshipsList({ filters }: InternshipsListProps) {
   const { bookmarks, toggleBookmark, isBookmarked } = useBookmarks()
   const [showBookmarksOnly, setShowBookmarksOnly] = useState(false)
   const [sortBy, setSortBy] = useState<SortOption>('newest')
+  const [selectedInternship, setSelectedInternship] = useState<Internship | null>(null)
   
   // Add missing toggleBookmarksView function
   const toggleBookmarksView = () => {
@@ -138,6 +140,16 @@ export function InternshipsList({ filters }: InternshipsListProps) {
   
   // Check if there are more items to load
   const hasMore = paginatedInternships.length < sortedInternships.length
+
+  // Handle internship click to show modal
+  const handleInternshipClick = (internship: Internship) => {
+    setSelectedInternship(internship)
+  }
+
+  // Close modal
+  const closeModal = () => {
+    setSelectedInternship(null)
+  }
   
   if (loading && internships.length === 0) {
     return (
@@ -193,6 +205,7 @@ export function InternshipsList({ filters }: InternshipsListProps) {
                   internship={internship} 
                   isBookmarked={isBookmarked(internship.id)}
                   onToggleBookmark={toggleBookmark}
+                  onClick={handleInternshipClick}
                 />
               </div>
             )
@@ -203,6 +216,7 @@ export function InternshipsList({ filters }: InternshipsListProps) {
                 internship={internship} 
                 isBookmarked={isBookmarked(internship.id)}
                 onToggleBookmark={toggleBookmark}
+                onClick={handleInternshipClick}
               />
             )
           }
@@ -220,6 +234,15 @@ export function InternshipsList({ filters }: InternshipsListProps) {
           <div className="text-center py-4 text-gray-500 dark:text-gray-400">No more internships to load</div>
         )}
       </div>
+
+
+      {/* Render modal when an internship is selected */}
+      {selectedInternship && (
+        <InternshipModal 
+          internship={selectedInternship} 
+          onClose={closeModal} 
+        />
+      )}
     </div>
   )
 }

@@ -6,18 +6,34 @@ interface InternshipCardProps {
   internship: Internship
   isBookmarked: boolean
   onToggleBookmark: (internship: Internship) => void
+  onClick?: (internship: Internship) => void // Add onClick prop
 }
 
 export function InternshipCard({ 
   internship, 
   isBookmarked, 
-  onToggleBookmark 
+  onToggleBookmark,
+  onClick 
 }: InternshipCardProps) {
+  const handleClick = () => {
+    if (onClick) {
+      onClick(internship)
+    }
+  }
+
+  const handleBookmarkClick = (e: React.MouseEvent) => {
+    e.stopPropagation() // Prevent the card click event from firing
+    onToggleBookmark(internship)
+  }
+
   return (
-    <div className="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-md border border-gray-100 dark:border-gray-700 
-                  transition-all duration-300 ease-in-out 
-                  hover:shadow-lg hover:border-primary/20 dark:hover:border-primary/30 
-                  hover:translate-y-[-2px] hover:scale-[1.01]">
+    <div 
+      className="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-md border border-gray-100 dark:border-gray-700 
+                transition-all duration-300 ease-in-out 
+                hover:shadow-lg hover:border-primary/20 dark:hover:border-primary/30 
+                hover:translate-y-[-2px] hover:scale-[1.01] cursor-pointer"
+      onClick={handleClick}
+    >
       <div className="flex justify-between items-start">
         <div className="space-y-1.5 flex-1 min-w-0 pr-2">
           <h3 className="font-medium text-lg text-secondary dark:text-secondary-dark truncate">{internship.title}</h3>
@@ -25,7 +41,7 @@ export function InternshipCard({
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
           <button 
-            onClick={() => onToggleBookmark(internship)}
+            onClick={handleBookmarkClick}
             className="text-primary hover:text-primary-dark dark:hover:text-primary-light 
                       transition-all duration-200 p-1.5 rounded-full 
                       hover:bg-gray-100 dark:hover:bg-gray-700 

@@ -3,6 +3,8 @@ import { FiltersSidebar } from './components/FiltersSidebar'
 import { Footer } from './components/Footer'
 import { InternshipsList } from './components/InternshipsList'
 import { Navbar } from './components/Navbar'
+import { FAQ } from './components/FAQ'
+import { ReviewSection } from './components/ReviewSection'
 
 interface Filters {
   usePreferences: boolean
@@ -19,7 +21,7 @@ function App() {
   })
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 overflow-x-hidden">
       <Navbar />
       <div className="container py-8 max-w-5xl mx-auto px-4 mt-5">
         <div className="flex flex-col md:flex-row gap-6">
@@ -31,6 +33,8 @@ function App() {
           </main>
         </div>
       </div>
+      <FAQ />
+      <ReviewSection />
       <Footer />
     </div>
   )
