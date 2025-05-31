@@ -154,7 +154,7 @@ export function InternshipsList({ filters }: InternshipsListProps) {
   }
   
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 px-2">
       <div className='flex flex-col justify-center items-center'>
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between w-full mb-4">
           <h2 className="text-xl text-center font-medium text-secondary dark:text-secondary-dark">
