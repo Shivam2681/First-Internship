@@ -1,113 +1,209 @@
-import { FaBell, FaEnvelope, FaChevronDown, FaBars, FaTimes } from 'react-icons/fa'
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import { useState, useEffect } from 'react'
+import {
+  FaEnvelope,
+  FaChevronDown,
+  FaBars,
+  FaTimes,
+  FaMoon,
+  FaSun,
+} from "react-icons/fa";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { useState, useEffect } from "react";
+import { useDarkMode } from "../lib/DarkModeContext";
 
 export function Navbar() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [isAnimating, setIsAnimating] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const { theme, toggleTheme } = useDarkMode();
 
   const openMobileMenu = () => {
-    setIsMobileMenuOpen(true)
-    setIsAnimating(true)
-  }
+    setIsMobileMenuOpen(true);
+    setIsAnimating(true);
+  };
 
   const closeMobileMenu = () => {
-    setIsAnimating(false)
+    setIsAnimating(false);
     // Wait for animation to complete before hiding the menu
     setTimeout(() => {
-      setIsMobileMenuOpen(false)
-    }, 300) // Match this with the CSS transition duration
-  }
+      setIsMobileMenuOpen(false);
+    }, 300); // Match this with the CSS transition duration
+  };
 
   useEffect(() => {
     if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     }
     // Cleanup function to reset overflow when component unmounts
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     };
   }, [isMobileMenuOpen]);
 
   return (
-    <nav className="sticky top-0 bg-white shadow-sm z-50">
+    <nav className="sticky top-0 bg-white dark:bg-gray-800 shadow-md z-50 border-b border-gray-100 dark:border-gray-700">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          {/* Left side */}
-          <div className="flex items-center space-x-4">
-            <button 
-              className="md:hidden text-secondary hover:text-primary" 
-              onClick={() => isMobileMenuOpen ? closeMobileMenu() : openMobileMenu()}
+          {/* Left side - Improved alignment */}
+          <div className="flex items-center space-x-2 md:space-x-4">
+            <button
+              className="md:hidden text-secondary dark:text-gray-200 hover:text-primary dark:hover:text-primary transition-colors p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+              onClick={() =>
+                isMobileMenuOpen ? closeMobileMenu() : openMobileMenu()
+              }
             >
-              {isMobileMenuOpen ? <FaTimes className="h-5 w-5" /> : <FaBars className="h-5 w-5" />}
+              {isMobileMenuOpen ? (
+                <FaTimes className="h-5 w-5" />
+              ) : (
+                <FaBars className="h-5 w-5" />
+              )}
             </button>
-            <a href="/" className="text-2xl font-bold text-primary">
-              INTERNSHALA
+            <a
+              href="/"
+              className="flex items-center text-primary dark:text-primary-light transition-colors hover:text-primary-dark dark:hover:text-primary"
+            >
+              <img src="/logo.png" alt="Internshala" className="w-36 mb-4 md:mb-0 md:w-44" />
             </a>
           </div>
 
-          {/* Right side */}
-          <div className="flex items-center space-x-6">
+          {/* Right side - Improved spacing */}
+          <div className="flex items-center space-x-3 md:space-x-6">
+            {/* Dark mode toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-1.5 md:p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition-colors"
+              aria-label="Toggle dark mode"
+            >
+              {theme === "dark" ? (
+                <FaSun className="h-4 w-4 md:h-5 md:w-5" />
+              ) : (
+                <FaMoon className="h-4 w-4 md:h-5 md:w-5" />
+              )}
+            </button>
+
             <div className="hidden md:flex items-center space-x-6">
               {/* Internships Dropdown */}
               <div className="relative group">
                 <button className="flex border-b-2 border-blue-400 items-center text-secondary hover:text-primary py-2">
                   Internships <FaChevronDown className="ml-1 h-3 w-3" />
                 </button>
-                
+
                 {/* Internships Dropdown Menu */}
                 <div className="absolute left-0 top-full mt-3 w-[500px] bg-white shadow-lg border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                   <div className="flex">
                     {/* Left Column */}
                     <div className="w-1/2 p-6 border-r">
                       <div className="mb-6">
-                        <h3 className="text-blue-500 bg-blue-50 px-3 py-2 rounded font-medium mb-4">Top Locations</h3>
+                        <h3 className="text-blue-500 bg-blue-50 px-3 py-2 rounded font-medium mb-4">
+                          Top Locations
+                        </h3>
                         <div className="space-y-2">
-                          <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Work from Home</a>
-                          <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Internship in Bangalore</a>
-                          <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Internship in Delhi</a>
-                          <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Internship in Hyderabad</a>
-                          <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Internship in Mumbai</a>
-                          <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Internship in Chennai</a>
-                          <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Internship in Pune</a>
+                          <a
+                            href="#"
+                            className="block text-gray-700 hover:text-blue-500 py-1"
+                          >
+                            Work from Home
+                          </a>
+                          <a
+                            href="#"
+                            className="block text-gray-700 hover:text-blue-500 py-1"
+                          >
+                            Internship in Bangalore
+                          </a>
+                          <a
+                            href="#"
+                            className="block text-gray-700 hover:text-blue-500 py-1"
+                          >
+                            Internship in Delhi
+                          </a>
+                          <a
+                            href="#"
+                            className="block text-gray-700 hover:text-blue-500 py-1"
+                          >
+                            Internship in Hyderabad
+                          </a>
+                          <a
+                            href="#"
+                            className="block text-gray-700 hover:text-blue-500 py-1"
+                          >
+                            Internship in Mumbai
+                          </a>
+                          <a
+                            href="#"
+                            className="block text-gray-700 hover:text-blue-500 py-1"
+                          >
+                            Internship in Chennai
+                          </a>
+                          <a
+                            href="#"
+                            className="block text-gray-700 hover:text-blue-500 py-1"
+                          >
+                            Internship in Pune
+                          </a>
                         </div>
                       </div>
-                      
+
                       <div className="mb-6">
-                        <h3 className="text-gray-800 font-medium mb-4">Profile</h3>
+                        <h3 className="text-gray-800 font-medium mb-4">
+                          Profile
+                        </h3>
                       </div>
-                      
+
                       <div className="mb-6">
-                        <h3 className="text-gray-800 font-medium mb-4">Top Categories</h3>
+                        <h3 className="text-gray-800 font-medium mb-4">
+                          Top Categories
+                        </h3>
                       </div>
-                      
+
                       <div className="mb-6">
-                        <h3 className="text-gray-800 font-medium mb-4">Explore More Internships</h3>
+                        <h3 className="text-gray-800 font-medium mb-4">
+                          Explore More Internships
+                        </h3>
                       </div>
-                      
+
                       <div>
                         <h3 className="text-gray-800 font-medium mb-4">
                           Placement Guarantee Courses
-                          <span className="ml-2 px-2 py-1 text-xs bg-orange-500 text-white rounded">NEW</span>
+                          <span className="ml-2 px-2 py-1 text-xs bg-orange-500 text-white rounded">
+                            NEW
+                          </span>
                         </h3>
                       </div>
                     </div>
-                    
+
                     {/* Right Column */}
                     <div className="w-1/2 p-6">
                       <div className="space-y-2">
-                        <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Internship in Kolkata</a>
-                        <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Internship in Jaipur</a>
-                        <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">International Internship</a>
-                        <a href="#" className="block text-gray-700 hover:text-blue-500 py-1 font-medium">View all internships</a>
+                        <a
+                          href="#"
+                          className="block text-gray-700 hover:text-blue-500 py-1"
+                        >
+                          Internship in Kolkata
+                        </a>
+                        <a
+                          href="#"
+                          className="block text-gray-700 hover:text-blue-500 py-1"
+                        >
+                          Internship in Jaipur
+                        </a>
+                        <a
+                          href="#"
+                          className="block text-gray-700 hover:text-blue-500 py-1"
+                        >
+                          International Internship
+                        </a>
+                        <a
+                          href="#"
+                          className="block text-gray-700 hover:text-blue-500 py-1 font-medium"
+                        >
+                          View all internships
+                        </a>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              
+
               {/* Courses Dropdown */}
               <div className="relative group">
                 <button className="flex items-center text-secondary hover:text-primary py-2">
@@ -117,113 +213,236 @@ export function Navbar() {
                   </span>
                   <FaChevronDown className="ml-1 h-3 w-3" />
                 </button>
-                
+
                 {/* Courses Dropdown Menu */}
                 <div className="absolute mt-3 -ml-32 w-[400px] bg-white shadow-lg border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                   <div className="flex">
                     {/* Left Column - Certification Courses */}
                     <div className="w-1/2 p-6 border-r">
-                      <h3 className="text-gray-800 font-medium mb-4">Certification Courses</h3>
+                      <h3 className="text-gray-800 font-medium mb-4">
+                        Certification Courses
+                      </h3>
                       <div className="space-y-3">
-                        <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Web Development</a>
-                        <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Programming with Python</a>
-                        <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Machine Learning</a>
-                        <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Core Java</a>
-                        <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Cloud computing with AWS</a>
-                        <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Digital Marketing</a>
-                        <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Advanced Excel</a>
-                        <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">AutoCAD</a>
-                        <a href="#" className="block text-blue-500 hover:text-blue-600 py-1 font-medium">View 70+ more courses</a>
+                        <a
+                          href="#"
+                          className="block text-gray-700 hover:text-blue-500 py-1"
+                        >
+                          Web Development
+                        </a>
+                        <a
+                          href="#"
+                          className="block text-gray-700 hover:text-blue-500 py-1"
+                        >
+                          Programming with Python
+                        </a>
+                        <a
+                          href="#"
+                          className="block text-gray-700 hover:text-blue-500 py-1"
+                        >
+                          Machine Learning
+                        </a>
+                        <a
+                          href="#"
+                          className="block text-gray-700 hover:text-blue-500 py-1"
+                        >
+                          Core Java
+                        </a>
+                        <a
+                          href="#"
+                          className="block text-gray-700 hover:text-blue-500 py-1"
+                        >
+                          Cloud computing with AWS
+                        </a>
+                        <a
+                          href="#"
+                          className="block text-gray-700 hover:text-blue-500 py-1"
+                        >
+                          Digital Marketing
+                        </a>
+                        <a
+                          href="#"
+                          className="block text-gray-700 hover:text-blue-500 py-1"
+                        >
+                          Advanced Excel
+                        </a>
+                        <a
+                          href="#"
+                          className="block text-gray-700 hover:text-blue-500 py-1"
+                        >
+                          AutoCAD
+                        </a>
+                        <a
+                          href="#"
+                          className="block text-blue-500 hover:text-blue-600 py-1 font-medium"
+                        >
+                          View 70+ more courses
+                        </a>
                       </div>
                     </div>
-                    
+
                     {/* Right Column - Placement Guarantee Courses */}
                     <div className="w-1/2 p-6">
-                      <h3 className="text-gray-800 font-medium mb-4">Placement Guarantee Courses</h3>
+                      <h3 className="text-gray-800 font-medium mb-4">
+                        Placement Guarantee Courses
+                      </h3>
                       <div className="space-y-3">
-                        <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Full Stack Development Course</a>
-                        <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Data Science Course</a>
-                        <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Product Management Course</a>
-                        <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Digital Marketing Course</a>
+                        <a
+                          href="#"
+                          className="block text-gray-700 hover:text-blue-500 py-1"
+                        >
+                          Full Stack Development Course
+                        </a>
+                        <a
+                          href="#"
+                          className="block text-gray-700 hover:text-blue-500 py-1"
+                        >
+                          Data Science Course
+                        </a>
+                        <a
+                          href="#"
+                          className="block text-gray-700 hover:text-blue-500 py-1"
+                        >
+                          Product Management Course
+                        </a>
+                        <a
+                          href="#"
+                          className="block text-gray-700 hover:text-blue-500 py-1"
+                        >
+                          Digital Marketing Course
+                        </a>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              
+
               {/* Jobs Dropdown */}
               <div className="relative group">
                 <button className="flex items-center text-secondary hover:text-primary py-2">
                   Jobs <FaChevronDown className="ml-1 h-3 w-3" />
                 </button>
-                
+
                 {/* Jobs Dropdown Menu */}
                 <div className="absolute -ml-48 mt-3 w-[400px] bg-white shadow-lg border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                   <div className="flex">
                     {/* Left Column */}
                     <div className="w-1/2 p-6 border-r">
                       <div className="mb-6">
-                        <h3 className="text-blue-500 bg-blue-50 px-3 py-2 rounded font-medium mb-4">Top Locations</h3>
+                        <h3 className="text-blue-500 bg-blue-50 px-3 py-2 rounded font-medium mb-4">
+                          Top Locations
+                        </h3>
                         <div className="space-y-2">
-                          <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Work from home</a>
-                          <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Jobs in Delhi</a>
-                          <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Jobs in Mumbai</a>
-                          <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Jobs in Bangalore</a>
-                          <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Jobs in Hyderabad</a>
-                          <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Jobs in Kolkata</a>
-                          <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Jobs in Chennai</a>
+                          <a
+                            href="#"
+                            className="block text-gray-700 hover:text-blue-500 py-1"
+                          >
+                            Work from home
+                          </a>
+                          <a
+                            href="#"
+                            className="block text-gray-700 hover:text-blue-500 py-1"
+                          >
+                            Jobs in Delhi
+                          </a>
+                          <a
+                            href="#"
+                            className="block text-gray-700 hover:text-blue-500 py-1"
+                          >
+                            Jobs in Mumbai
+                          </a>
+                          <a
+                            href="#"
+                            className="block text-gray-700 hover:text-blue-500 py-1"
+                          >
+                            Jobs in Bangalore
+                          </a>
+                          <a
+                            href="#"
+                            className="block text-gray-700 hover:text-blue-500 py-1"
+                          >
+                            Jobs in Hyderabad
+                          </a>
+                          <a
+                            href="#"
+                            className="block text-gray-700 hover:text-blue-500 py-1"
+                          >
+                            Jobs in Kolkata
+                          </a>
+                          <a
+                            href="#"
+                            className="block text-gray-700 hover:text-blue-500 py-1"
+                          >
+                            Jobs in Chennai
+                          </a>
                         </div>
                       </div>
-                      
+
                       <div className="mb-6">
-                        <h3 className="text-gray-800 font-medium mb-4">Top Categories</h3>
+                        <h3 className="text-gray-800 font-medium mb-4">
+                          Top Categories
+                        </h3>
                       </div>
-                      
+
                       <div className="mb-6">
-                        <h3 className="text-gray-800 font-medium mb-4">Explore More Jobs</h3>
+                        <h3 className="text-gray-800 font-medium mb-4">
+                          Explore More Jobs
+                        </h3>
                       </div>
-                      
+
                       <div>
                         <h3 className="text-gray-800 font-medium mb-4">
                           Placement Guarantee Courses
-                          <span className="ml-2 px-2 py-1 text-xs bg-orange-500 text-white rounded">NEW</span>
+                          <span className="ml-2 px-2 py-1 text-xs bg-orange-500 text-white rounded">
+                            NEW
+                          </span>
                         </h3>
                       </div>
                     </div>
-                    
+
                     {/* Right Column */}
                     <div className="w-1/2 p-6">
                       <div className="space-y-2">
-                        <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Jobs in Pune</a>
-                        <a href="#" className="block text-gray-700 hover:text-blue-500 py-1">Jobs in Jaipur</a>
-                        <a href="#" className="block text-gray-700 hover:text-blue-500 py-1 font-medium">View all jobs</a>
+                        <a
+                          href="#"
+                          className="block text-gray-700 hover:text-blue-500 py-1"
+                        >
+                          Jobs in Pune
+                        </a>
+                        <a
+                          href="#"
+                          className="block text-gray-700 hover:text-blue-500 py-1"
+                        >
+                          Jobs in Jaipur
+                        </a>
+                        <a
+                          href="#"
+                          className="block text-gray-700 hover:text-blue-500 py-1 font-medium"
+                        >
+                          View all jobs
+                        </a>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            
-            <button className="text-secondary hover:text-primary">
-              <FaEnvelope className="h-5 w-5" />
-            </button>
-            
+
             <div className="relative">
-              <button className="text-secondary hover:text-primary">
-                <FaBell className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 h-4 w-4 text-xs bg-red-500 text-white rounded-full flex items-center justify-center">
+              <button className="text-secondary hover:text-primary p-1.5 md:p-0">
+                <FaEnvelope className="h-4 w-4 md:h-5 md:w-5" />
+                <span className="absolute -top-1 -right-1 h-3.5 w-3.5 md:h-4 md:w-4 text-xs bg-red-500 text-white rounded-full flex items-center justify-center text-[10px] md:text-xs">
                   1
                 </span>
               </button>
             </div>
-            
+
             <DropdownMenu.Root>
               <DropdownMenu.Trigger asChild>
-                <button className="h-8 w-8 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary/90">
+                <button className="h-7 w-7 md:h-8 md:w-8 md:flex hidden rounded-full bg-primary text-white items-center justify-center hover:bg-primary/90 text-sm md:text-base">
                   S
                 </button>
               </DropdownMenu.Trigger>
-              
+
               <DropdownMenu.Portal>
                 <DropdownMenu.Content className="bg-white border mt-4 shadow-lg p-2 min-w-[200px] z-50">
                   <DropdownMenu.Item className="px-4 py-2 text-sm text-secondary hover:bg-gray-100 rounded cursor-pointer">
@@ -248,9 +467,9 @@ export function Navbar() {
         // Main container for the mobile menu and overlay
         <div className="md:hidden fixed inset-0 z-40 flex">
           {/* Sidebar Content - positioned with a higher z-index */}
-          <div 
+          <div
             className={`fixed inset-y-0 left-0 w-4/5 bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${
-              isAnimating ? 'translate-x-0' : '-translate-x-full'
+              isAnimating ? "translate-x-0" : "-translate-x-full"
             }`}
           >
             <div className="flex flex-col h-full overflow-y-auto pt-4 px-6">
@@ -261,34 +480,54 @@ export function Navbar() {
                 </div>
                 <div>
                   <div className="font-medium">Shivam Raj Shekhar</div>
-                  <div className="text-sm text-gray-500">shekharshivam51@gmail.com</div>
+                  <div className="text-sm text-gray-500">
+                    shekharshivam51@gmail.com
+                  </div>
                 </div>
               </div>
-              
+
               {/* Rating */}
               <div className="flex items-center mb-6">
                 <span className="text-yellow-400 mr-1">★</span>
                 <span className="mr-3">4</span>
-                <a href="#" className="text-blue-500">Know More</a>
+                <a href="#" className="text-blue-500">
+                  Know More
+                </a>
               </div>
-              
+
               {/* Navigation Links */}
               <nav className="flex flex-col space-y-4 border-t border-b py-4 mb-4">
-                <a href="#" className="py-2">Internships</a>
-                <a href="#" className="py-2">Jobs</a>
+                <a href="#" className="py-2">
+                  Internships
+                </a>
+                <a href="#" className="py-2">
+                  Jobs
+                </a>
                 <div className="flex justify-between items-center py-2">
                   <span>Placement Guarantee Courses</span>
-                  <span className="bg-orange-500 text-white px-3 py-1 text-sm rounded">GET HIRED</span>
+                  <span className="bg-orange-500 text-white px-3 py-1 text-sm rounded">
+                    GET HIRED
+                  </span>
                 </div>
-                <a href="#" className="py-2">Certification Courses</a>
+                <a href="#" className="py-2">
+                  Certification Courses
+                </a>
               </nav>
-              
+
               {/* User Actions */}
               <div className="flex flex-col space-y-4">
-                <a href="#" className="py-2">My Applications</a>
-                <a href="#" className="py-2">My Bookmarks</a>
-                <a href="#" className="py-2">Edit Resume</a>
-                <a href="#" className="py-2">Edit Preferences</a>
+                <a href="#" className="py-2">
+                  My Applications
+                </a>
+                <a href="#" className="py-2">
+                  My Bookmarks
+                </a>
+                <a href="#" className="py-2">
+                  Edit Resume
+                </a>
+                <a href="#" className="py-2">
+                  Edit Preferences
+                </a>
                 <div className="flex items-center justify-between py-2">
                   <span>More</span>
                   <FaChevronDown className="h-3 w-3" />
@@ -297,14 +536,14 @@ export function Navbar() {
             </div>
           </div>
           {/* Overlay to close menu - positioned behind the sidebar but above other page content */}
-          <div 
+          <div
             className={`fixed inset-0 bg-black z-40 transition-opacity duration-300 ease-in-out ${
-              isAnimating ? 'bg-opacity-25' : 'bg-opacity-0'
+              isAnimating ? "bg-opacity-25" : "bg-opacity-0"
             }`}
             onClick={closeMobileMenu}
           ></div>
         </div>
       )}
     </nav>
-  )
+  );
 }
