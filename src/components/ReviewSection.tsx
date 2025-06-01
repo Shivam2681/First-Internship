@@ -34,18 +34,19 @@ function Testimonial({ name, text, image }: TestimonialProps) {
 
 export function ReviewSection() {
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   
   // Array of testimonials
   const testimonials = [
     {
       name: "Pankaj", 
-      text: "100% guarantee de rahe the, mujhe 100% doubt tha ki placement hogi bhi ya nahi. Truth is I got a placement. I didn't have any idea of how to enter corporate, what kind of job would be a good fit for me and where to start. In the placement guarantee course, I learnt so much and even before I completed it, I got an internship.", 
+      text: "100% guarantee de rahe the, mujhe 100% doubt tha ki placement hogi bhi ya nahi. Truth is I got a placement. I didn't have any idea of how to enter corporate, what kind of job would be a good fit for me and where to start. In the placement guarantee course.", 
       image: "/pankaj.png" 
     },
     {
       name: "Preetika Anand", 
-      text: "Internshala has helped me get into internships and I have got many calls from hirers through Internshala. I would be using it frequently for my job search and would be my first prioritized job search app as it gave me more opportunities to explore. would be looking forward for more opportunities.", 
+      text: "Internshala has helped me get into internships and I have got many calls from hirers through Internshala. I would be using it frequently for my job search and would be my first prioritized job search app as it gave me more opportunities to explore.", 
       image: "/preetika.png" 
     },
     {
@@ -76,15 +77,68 @@ export function ReviewSection() {
   const canGoNext = currentIndex < totalSlides
   const canGoPrev = currentIndex > 0
   
+  // Check if we're on mobile on mount and when window resizes
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 1024)
+      // Reset to first slide when switching between mobile and desktop
+      setCurrentIndex(0)
+    }
+    
+    // Initial check
+    checkIfMobile()
+    
+    // Add resize listener
+    window.addEventListener('resize', checkIfMobile)
+    
+    return () => {
+      window.removeEventListener('resize', checkIfMobile)
+    }
+  }, [])
+  
   const handlePrev = () => {
     if (canGoPrev) {
       setCurrentIndex(prev => prev - 1)
+      // Scroll to the new position with smooth animation
+      if (scrollContainerRef.current && !isMobile) {
+        const container = scrollContainerRef.current
+        const newIndex = currentIndex - 1
+        const scrollAmount = container.scrollWidth / testimonials.length * newIndex
+        container.scrollTo({
+          left: scrollAmount,
+          behavior: 'smooth'
+        })
+      }
     }
   }
   
   const handleNext = () => {
     if (canGoNext) {
       setCurrentIndex(prev => prev + 1)
+      // Scroll to the new position with smooth animation
+      if (scrollContainerRef.current && !isMobile) {
+        const container = scrollContainerRef.current
+        const newIndex = currentIndex + 1
+        const scrollAmount = container.scrollWidth / testimonials.length * newIndex
+        container.scrollTo({
+          left: scrollAmount,
+          behavior: 'smooth'
+        })
+      }
+    }
+  }
+  
+  // Track scroll position and update currentIndex
+  const handleScroll = () => {
+    if (scrollContainerRef.current && isMobile) {
+      const container = scrollContainerRef.current
+      const scrollPosition = container.scrollLeft
+      const cardWidth = container.scrollWidth / testimonials.length
+      const newIndex = Math.round(scrollPosition / cardWidth)
+      
+      if (newIndex !== currentIndex && newIndex >= 0 && newIndex < testimonials.length) {
+        setCurrentIndex(newIndex)
+      }
     }
   }
   
@@ -92,21 +146,67 @@ export function ReviewSection() {
   useEffect(() => {
     if (scrollContainerRef.current) {
       const container = scrollContainerRef.current
-      // On mobile, scroll one card at a time
-      if (window.innerWidth < 768) {
-        const scrollAmount = container.scrollWidth / testimonials.length * currentIndex
-        container.scrollTo({
-          left: scrollAmount,
-          behavior: 'smooth'
-        })
+      let scrollAmount
+      
+      if (isMobile) {
+        scrollAmount = container.scrollWidth / testimonials.length * currentIndex
+      } else {
+        // For desktop, calculate scroll position based on cardsPerView
+        scrollAmount = container.scrollWidth / (testimonials.length / cardsPerView) * currentIndex
+      }
+      
+      container.scrollTo({
+        left: scrollAmount,
+        behavior: 'smooth'
+      })
+    }
+  }, [currentIndex, testimonials.length, isMobile, cardsPerView])
+
+  // Add scroll event listener
+  useEffect(() => {
+    const container = scrollContainerRef.current
+    if (container) {
+      container.addEventListener('scroll', handleScroll)
+      return () => {
+        container.removeEventListener('scroll', handleScroll)
       }
     }
-  }, [currentIndex, testimonials.length])
+  }, [isMobile, currentIndex]) // Added currentIndex as dependency
 
   // Get visible testimonials for desktop view (2 at a time)
   const getVisibleTestimonials = () => {
     const startIndex = currentIndex * cardsPerView
     return testimonials.slice(startIndex, startIndex + cardsPerView)
+  }
+
+  // Calculate the number of pagination dots based on screen size
+  const getPaginationDots = () => {
+    if (isMobile) {
+      return testimonials.length
+    } else {
+      return totalSlides + 1 // +1 because we need dots for all possible positions
+    }
+  }
+  
+  // Handle pagination dot click
+  const handleDotClick = (index: number) => {
+    setCurrentIndex(index)
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current
+      let scrollAmount
+      
+      if (isMobile) {
+        scrollAmount = container.scrollWidth / testimonials.length * index
+      } else {
+        // For desktop, calculate scroll position based on cardsPerView
+        scrollAmount = container.scrollWidth / (testimonials.length / cardsPerView) * index
+      }
+      
+      container.scrollTo({
+        left: scrollAmount,
+        behavior: 'smooth'
+      })
+    }
   }
 
   return (
@@ -153,7 +253,7 @@ export function ReviewSection() {
             {/* Mobile view - scrollable */}
             <div 
               ref={scrollContainerRef}
-              className="flex lg:hidden overflow-x-auto gap-4 pb-4 snap-x snap-mandatory hide-scrollbar"
+              className="flex lg:hidden overflow-x-auto gap-4 pb-4 snap-x snap-mandatory hide-scrollbar touch-pan-x"
             >
               {testimonials.map((testimonial, index) => (
                 <div key={index} className="snap-start w-full flex-shrink-0">
@@ -166,10 +266,10 @@ export function ReviewSection() {
               ))}
             </div>
             
-            {/* Desktop view - show only 2 cards at a time */}
-            <div className="hidden lg:grid lg:grid-cols-2 gap-4 px-4 py-8">
+            {/* Desktop view - show only 2 cards at a time with smooth transitions */}
+            <div className="hidden lg:grid lg:grid-cols-2 gap-4 px-4 py-8 transition-all duration-300 ease-in-out">
               {getVisibleTestimonials().map((testimonial, index) => (
-                <div key={currentIndex * cardsPerView + index}>
+                <div key={currentIndex * cardsPerView + index} className="transition-all duration-300 ease-in-out">
                   <Testimonial 
                     name={testimonial.name} 
                     text={testimonial.text} 
@@ -213,14 +313,14 @@ export function ReviewSection() {
               </button>
             </div>
             
-            {/* Pagination indicators for mobile */}
-            <div className="flex justify-center mt-4 lg:hidden">
-              {[...Array(testimonials.length)].map((_, i) => (
+            {/* Pagination indicators for all screen sizes */}
+            <div className="flex justify-center mt-4">
+              {[...Array(getPaginationDots())].map((_, i) => (
                 <button 
                   key={i}
-                  onClick={() => setCurrentIndex(i)}
+                  onClick={() => handleDotClick(i)}
                   className={cn(
-                    "w-2 h-2 mx-1 rounded-full",
+                    "w-2 h-2 mx-1 rounded-full transition-colors duration-300",
                     currentIndex === i ? "bg-primary" : "bg-gray-300 dark:bg-gray-600"
                   )}
                   aria-label={`Go to slide ${i + 1}`}

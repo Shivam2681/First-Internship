@@ -178,7 +178,7 @@ export function InternshipsList({ filters }: InternshipsListProps) {
               onClick={toggleBookmarksView}
               className={`px-4 py-2 rounded-lg ${showBookmarksOnly ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-200'}`}
             >
-              {showBookmarksOnly ? 'Show All' : 'Show Bookmarks'}
+              {showBookmarksOnly ? 'Show All' : 'Bookmarks'}
             </button>
             
             <select 
