@@ -37,17 +37,16 @@ export function ReviewSection() {
   const [isMobile, setIsMobile] = useState(false)
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   
-  // Array of testimonials
   const testimonials = [
     {
       name: "Pankaj", 
       text: "100% guarantee de rahe the, mujhe 100% doubt tha ki placement hogi bhi ya nahi. Truth is I got a placement. I didn't have any idea of how to enter corporate, what kind of job would be a good fit for me and where to start. In the placement guarantee course.", 
-      image: "/pankaj.png" 
+      image: "/favicon.png" 
     },
     {
       name: "Preetika Anand", 
       text: "Internshala has helped me get into internships and I have got many calls from hirers through Internshala. I would be using it frequently for my job search and would be my first prioritized job search app as it gave me more opportunities to explore.", 
-      image: "/preetika.png" 
+      image: "/favicon.png" 
     },
     {
       name: "Rahul Sharma", 
@@ -85,10 +84,8 @@ export function ReviewSection() {
       setCurrentIndex(0)
     }
     
-    // Initial check
     checkIfMobile()
-    
-    // Add resize listener
+
     window.addEventListener('resize', checkIfMobile)
     
     return () => {
@@ -213,7 +210,7 @@ export function ReviewSection() {
     <div className="bg-blue-50 dark:bg-blue-900/20 py-12 px-4 relative overflow-hidden">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-          {/* Left section with heading and app rating */}
+          {/* Left section */}
           <div className="flex flex-col justify-center">
             <div className="mb-6">
               <span className="text-primary text-4xl font-bold">"</span>
@@ -279,7 +276,7 @@ export function ReviewSection() {
               ))}
             </div>
             
-            {/* Navigation arrows - positioned correctly and hidden on mobile */}
+            {/* Navigation arrows */}
             <div className="hidden lg:flex justify-between items-center absolute top-1/2 -translate-y-1/2 w-full px-2 pointer-events-none">
               <button 
                 onClick={handlePrev} 

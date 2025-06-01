@@ -235,8 +235,6 @@ export function InternshipsList({ filters }: InternshipsListProps) {
         )}
       </div>
 
-
-      {/* Render modal when an internship is selected */}
       {selectedInternship && (
         <InternshipModal 
           internship={selectedInternship} 

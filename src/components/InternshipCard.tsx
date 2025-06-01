@@ -6,7 +6,7 @@ interface InternshipCardProps {
   internship: Internship
   isBookmarked: boolean
   onToggleBookmark: (internship: Internship) => void
-  onClick?: (internship: Internship) => void // Add onClick prop
+  onClick?: (internship: Internship) => void
 }
 
 export function InternshipCard({ 
